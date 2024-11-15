@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   app:
-    image: rconfig/rconfig6:latest
+    image: rconfig/rconfigv6:latest
     # build:
     #   context: .
     #   dockerfile: Dockerfile
