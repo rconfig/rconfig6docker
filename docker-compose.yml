@@ -18,7 +18,7 @@ services:
     env_file: ./data/.env  # Use env_file to specify environment variables for DB
     ports:
       - "3306:3306"
-    options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5 -e MYSQL_ROOT_PASSWORD=xxx -e MYSQL_USER=xxx -e MYSQL_PASSWORD=xxx -e MYSQL_DATABASE=xxx --entrypoint sh mysql:8 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+    command: ["mysqld", "--mysql-native-password=ON"]
     volumes:
       - ./data/db_data:/var/lib/mysql  # Mount MySQL data to host directory
  
