@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8112:80"
+    depends_on:
+      - db
+    volumes:
+      - ./data/.env:/var/www/html/rconfig/.env  # Mount the .env file from local disk to container
+      - ./data/storage:/var/www/html/rconfig/storage  # Mount app storage directory to host directory
+
+  db:
+    image: mysql:8
+    env_file: ./data/.env  # Use env_file to specify environment variables for DB
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./data/db_data:/var/lib/mysql  # Mount MySQL data to host directory
+ 
+volumes:
+  db_data:
+
+networks:
+  rconfig_network:
+

@@ -1,0 +1,34 @@
+DEV BUILD:
+    git clone https://github.com/rconfig/rconfig.git
+    cd rconfig
+    composer install
+
+USER BUILD:
+    .update data/.env for mysql db params
+    copy storage dir from rconfig to .data/storage
+    sudo chown -R $USER:www-data ./data/storage
+    chmod -R 777 data/storage/
+    chmod -R 777 data/db_data
+update:
+    APP_DEBUG=ENVOY_APP_DEBUG
+    APP_URL=ENVOY_HOSTNAME
+
+Steps:
+    User needs to:
+    php artisan migrate
+    php artisan key:generate
+    php artisan passport:install
+    php artisan rconfig:sync-tasks
+    php artisan rconfig:sync-search # V7 Only
+    php artisan rconfig:clear-all
+     php artisan rconfig:update-rbac-data  # V7 Only
+    chown -R www-data:www-data /var/www/html/rconfig
+    chmod -R 775 /var/www/html/rconfig/storage
+
+
+https://vega.rconfig.com/api/dashboard/health-latest?clearcache=true
+
+
+Fix:
+    chmod 777 -R  data/storage/
+
