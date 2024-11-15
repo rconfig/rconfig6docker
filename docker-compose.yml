@@ -17,7 +17,7 @@ services:
     env_file: ./data/.env  # Use env_file to specify environment variables for DB
     ports:
       - "3310:3306"
-    volumes:
+    volumes:\
       - ./data/db_data:/var/lib/mysql  # Mount MySQL data to host directory
  
 volumes:

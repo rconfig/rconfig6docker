@@ -3,8 +3,17 @@ DEV BUILD:
     cd rconfig
     composer install
 
-    Repo Updates
-    git remote set-url origin https://<TOKEN>E@github.com/rConfigHub/V6DockerImage.git
+cd /home/docker/v6dockerbuild && docker build -t rconfigv6  .
+docker tag rconfigv6 rconfig/rconfigv6:1.0.0
+docker tag rconfigv6 rconfig/rconfigv6:latest
+docker push rconfig/rconfigv6:1.0.0
+docker push rconfig/rconfigv6:latest
+
+docker run -d -p 21:21 -p 20:20 -p 21100-21110:21100-21110 -v /srv/xftp:/home/vsftpd -e "FTP_USER=ftpuser1" -e "FTP_PASS=ftppass1" -e "PASV_ADDRESS=192.168.1.9" --name my-vsftpd-server rconfig-vsftpd
+
+Repo Update Repo URL:
+git remote set-url origin https://<TOKEN>@github.com/rConfigHub/V6DockerImage.git
+
 
 USER BUILD:
     .update data/.env for mysql db params
