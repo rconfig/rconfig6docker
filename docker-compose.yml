@@ -17,7 +17,7 @@ services:
     image: mysql:8
     env_file: ./data/.env  # Use env_file to specify environment variables for DB
     ports:
-      - "3306:3306"
+      - "3360:3306"
     command: ["mysqld", "--mysql-native-password=ON"]
     volumes:
       - ./data/db_data:/var/lib/mysql  # Mount MySQL data to host directory
