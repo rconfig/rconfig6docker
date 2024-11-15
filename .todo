@@ -27,6 +27,12 @@ update:
 
 Steps:
     User needs to:
+    Configure .env file 
+        APP_URL
+        DB_HOST=db ## chnage this is your compose service name is different
+        DB_DATABASE=rconfig
+        DB_USERNAME=rconfig
+        DB_PASSWORD=rconfig
     php artisan migrate
     php artisan key:generate
     php artisan passport:install
