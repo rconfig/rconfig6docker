@@ -1,6 +1,9 @@
 # Use the official PHP image with Apache as the base
 FROM php:8.3-apache
 
+# Set user ID for www-data to 1000
+RUN usermod -u 1000 www-data
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     libpng-dev \
@@ -36,6 +39,9 @@ COPY ./rconfig .
 # Set up permissions for storage and cache (important for Laravel)
 RUN chown -R www-data:www-data /var/www/html/rconfig/storage /var/www/html/rconfig/bootstrap/cache \
     && chmod -R 775 /var/www/html/rconfig/storage /var/www/html/rconfig/bootstrap/cache
+
+# Set the user for Apache to www-data
+USER www-data
 
 # Configure Apache to use Laravel's public directory
 RUN echo "DocumentRoot /var/www/html/rconfig/public" > /etc/apache2/sites-available/000-default.conf \
