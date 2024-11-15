@@ -3,6 +3,9 @@ DEV BUILD:
     cd rconfig
     composer install
 
+    Repo Updates
+    git remote set-url origin https://<TOKEN>E@github.com/rConfigHub/V6DockerImage.git
+
 USER BUILD:
     .update data/.env for mysql db params
     copy storage dir from rconfig to .data/storage
