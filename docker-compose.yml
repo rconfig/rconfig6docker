@@ -14,11 +14,10 @@ services:
       - ./data/storage:/var/www/html/rconfig/storage  # Mount app storage directory to host directory
 
   db:
-    image: mysql:8
+    image: mariadb:latest
     env_file: ./data/.env  # Use env_file to specify environment variables for DB
     ports:
       - "3360:3306"
-    command: ["mysqld", "--mysql-native-password=ON"]
     volumes:
       - ./data/db_data:/var/lib/mysql  # Mount MySQL data to host directory
  
