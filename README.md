@@ -14,7 +14,7 @@ https://github.com/mohammadain/laravel-docker-cron/blob/master/Dockerfile -->
             <img src="https://www.rconfig.com/images/rConfig_logos/new/blue/hex_logo_blue_horizontal_96.png" alt="rConfig Logo" />
   </a>
 
-  <h3 align="center">rConfig v6 Core Docker Compose Setup</h3>
+  <h3 align="center">rConfig v6 Core Docker Setup</h3>
 
   <p align="center">
     rConfig v6 Core is a free, open source, community edition of rConfig v6. It is a fully functional version of rConfig v6, with all the core features of rConfig v6 Professional, but with some limitations. Check out our <a href="https://www.rconfig.com/pricing#full-features"><strong>features list</strong></a> to learn more.
@@ -38,7 +38,7 @@ https://github.com/mohammadain/laravel-docker-cron/blob/master/Dockerfile -->
 
 [![Tests](https://github.com/eliashaeussler/typo3-badges/actions/workflows/tests.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-badges/actions/workflows/tests.yaml)
 [![License](https://img.shields.io/github/license/eliashaeussler/typo3-badges)](LICENSE) [![Made with Node](https://img.shields.io/badge/dynamic/json?label=node&query=%24.engines%5B%22node%22%5D&url=https%3A%2F%2Fraw.githubusercontent.com%2FMichaelCurrin%2Fbadge-generator%2Fmaster%2Fpackage.json)](https://nodejs.org 'Go to Node.js homepage')
-[![PHP Version Require](http://poser.pugx.org/pugx/badge-poser/require/php)](https://packagist.org/packages/pugx/badge-poser)
+[![PHP Version Require](https://poser.pugx.org/pugx/badge-poser/require/php)](https://packagist.org/packages/pugx/badge-poser)
 
  <img src="https://img.shields.io/badge/-Vue3-4FC08D?logo=vue.js&logoColor=white&style=flat"/>
  <img src="https://img.shields.io/badge/-Laravel-FF2D20?logo=laravel&logoColor=white&style=flat"/>
@@ -55,7 +55,7 @@ https://github.com/mohammadain/laravel-docker-cron/blob/master/Dockerfile -->
 
 ## Intro
 
-rConfig v6 is an enterprise grade Network Configuration Management (NCM) software package with superior NCM features and capabilities to help you easily manage configurations on large and small heterogenous networks. rConfig v6 is our flagship professional version of rConfig aimed at high value networks and business operations. rConfig v6 runs natively on many variants of Linux. Within this repo, is the code base for rConfig v6 Core, and a set of scripts to help you get started with rConfig v6 Core.
+rConfig v6 Docker Setup is a set of scripts to help you get started with rConfig V6 Core on Docker. rConfig V6 Coreis an enterprise grade Network Configuration Management (NCM) software package with superior NCM features and capabilities to help you easily manage configurations on large and small heterogenous networks. rConfig v6 is our flagship professional version of rConfig aimed at high value networks and business operations. rConfig v6 runs natively on many variants of Linux. Within this repo, we have developed docker compose - Dockerfile files and related artifacts to allow our customers run rConfig v6 within a Docker environment.
 
 If you are looking for rConfig V6 professional, please visit `https://www.rconfig.com/`.
 
@@ -65,7 +65,6 @@ Supported OS
 - RHEL Linux 8/9+
 - CentOS Linux 8/9+
 - Ubuntu 20.04+
-- Docker (Linux)(not yet ready)
 
 rConfig v6 core is completely free, you do not need an API key from rConfig to download and use this version. Please follow the instructions below to get started.
 
@@ -90,270 +89,108 @@ _Check out more on our [features page](https://www.rconfig.com/pricing#full-feat
 
 ## Installation
 
-We have made it super easy to get started with rConfig v6. Follow the steps below to get started. Check out our youtube channel for a video walkthrough of the installation process.
-
-[https://www.youtube.com/channel/rconfigV6Core](https://www.youtube.com/playlist?list=PL8dpV2hQIDLR04p5RuJEVcdhQY1gXKOgU)
-
-> [!NOTE]  
-> Do not follow the installation steps to update existing rConfig installations. You must skip to the <a href="#update">Updating</a> section below.
+We have made it super easy to get started with rConfig v6 on Docker. Follow the steps below to get started.
 
 ### Prerequisites
 
-Setup a server with one of the supported OS's listed above. We recommend using a fresh install of the OS. If you are using a server that has been in production, we recommend you backup the server before proceeding.
-
-You will need to install the following software on your server:
-Git 2.25+
-PHP 8.1+
-Composer 2.4+
-Apache 2.4+
-MySQL 5.7+ or MariaDB 10.5+
-nodejs 14.17+
-Supervisor 4.2+
-
-We have conveniently provided scripts to help you install the required software. Head over to [https://docs.rconfig.com/getstarted/os-setup](https://docs.rconfig.com/getstarted/os-setup) to find the correct script for your OS. If you are using a different OS, you will need to install the required software manually.
+- Docker & Docker Compose installed on your server
 
 > **Note**
 > You will need to be logged in as root when running the scripts.
 
-### Database Setup
-
-1. Login to your database server as root
-2. Create a new database
-
-```sh
-mysql -u root -p
-CREATE DATABASE rconfig;
-```
-
-3. Create a new user if required (do not use the credentials below in production). This is likely required for Ubutnu 20.04+. If you are using a different OS, you may not need to create a new user, and you can use the root account, though this is not recommended.
-
-```sh
-
-CREATE USER 'user1'@'localhost' IDENTIFIED BY 'password1';
-GRANT ALL PRIVILEGES ON rconfig.* TO 'user1'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-4. Exit the database
-
-```sh
-exit
-```
+### Steps
 
 ### rConfig Setup Steps
 
 1. Login as root
-2. Clone the repo
+2. Clone this repository to your server
 
 ```sh
-cd /var/www/html
-git clone https://github.com/rconfig/rconfig.git
+git clone https://github.com/rconfig/rconfig6docker.git
 ```
-
 3. Change directory to the repo
 
 ```sh
-cd rconfig
+cd rconfig6docker
 ```
-
-4. Create the .env file
+4. Edit the .env file and update the following variables:
 
 ```sh
-cp .env.example .env
+cd /data
+APP_URL="https://SERVER.DOMAIN.LOCAL" # Your FQDNorIP domain
+DB_HOST=db # This is the name of the database container or other server if you are using an external database
+DB_PORT=3306 # The port of the database server
+DB_DATABASE=DBNAME # The name of the database, this can be anything if you are creating a new database
+DB_USERNAME=DBUSER # The username for the database
+DB_PASSWORD=DBPASS # The password for the database
 ```
-
-5. Edit the .env file and update the following variables:
-
+5. Run the following command to start the rConfig V6 Docker container:
 ```sh
-APP_URL="https://SERVER.DOMAIN.LOCAL"
-APP_DIR_PATH=/var/www/html/rconfig
-DB_HOST=DBHOST
-DB_PORT=3306
-DB_DATABASE=DBNAME
-DB_USERNAME=DBUSER
-DB_PASSWORD=DBPASS
+cd /rconfig6docker
+docker-compose up -d --build
 ```
-
-6. Install the required PHP packages
-
+6. Verify that the container is running by running the following command:
 ```sh
-export COMPOSER_ALLOW_SUPERUSER=1
-composer self-update --2
-yes | composer install --no-dev
+docker-compose ps
 ```
-
-7. Install apache and supervisor
-
+7. Once the containers are up and running with no errors from the previous output, login to the app container.
 ```sh
-chmod +x setup_apache.sh
-./setup_apache.sh
+docker exec -it {app container name} /bin/bash
 ```
-
-8. Install supervisor
-
+8. You need to complete the installation by running the following commands inside the container:
 ```sh
-chmod +x setup_supervisor.sh
-./setup_supervisor.sh
+php artisan migrate
 ```
-
-9. Run the installation script. This will install the required packages, setup the database, and configure the web server. The script will take a few minutes to complete.
-
-> [!WARNING]  
-> Do not run the next command on existing rConfig deployments in an attempt to update. You must follow the instructions in the <a href="#update">Updating</a> section below. The command below is for new installations only.
-
-```sh
-php artisan install
-```
-
-If you area asked 'Add a cron entry for task scheduling?', type `yes` and press enter.
-
+If you area asked Do you want to run this command?', type `yes` and press enter.
 The output from the above should look like this:
-
 ```sh
+                                    APPLICATION IN PRODUCTION.
 
 
-                                         APPLICATION INSTALL.
+ ┌ Are you sure you want to run this command? ──────────────────┐
+ │ Yes                                                          │
+ └──────────────────────────────────────────────────────────────┘
+
+   INFO  Preparing database.
+
+  Creating migration table ............................................................. 26ms DONE
 
 
-  Packages discovery ...................................................................... 5ms DONE
+   INFO  Running migrations.
 
-  command key:generate .................................................................... 2ms DONE
-  command migrate
-....................................................................... 387ms DONE
-  command passport:install ............................................................ 1,839ms DONE
-  command rconfig:clear-all
-No config updates to processes
-
-
-> Illuminate\Foundation\ComposerScripts::postAutoloadDump
-Generated optimized autoload files containing 6960 classes
-........................................................... 7,036ms DONE
-  command rconfig:sync-tasks .............................................................. 5ms DONE
-  script  cache .......................................................................... 57ms DONE
-
-  Assets publishing ....................................................................... 7ms DONE
-
-  Add a cron entry for task scheduling? (yes/no) [no]
-❯ yes
-
-   INFO  Entry was added [* * * * * cd /var/www/html/rconfig && php artisan schedule:run >> /dev/null 2>&1].
-
-   INFO  Install done!
-
+  2016_06_01_000001_create_oauth_auth_codes_table ...................................... 42ms DONE
+  2016_06_01_000002_create_oauth_access_tokens_table ................................... 40ms DONE
+  
 ```
-
-10. Update apache config file for correct server name.
-
 ```sh
-# CentOS/RHEL
-sudo vi /etc/httpd/conf.d/rconfig-vhost.conf
+php artisan key:generate
 ```
-
 ```sh
-# Ubuntu
-sudo vi /etc/apache2/sites-enabled/rconfig-vhost.conf
+php artisan passport:install
 ```
-
-Update the `ServerName` to match your server's domain name.
-
 ```sh
-ServerName YourServerName.domain.local
-ServerAlias YourServerName.domain.local
+php artisan rconfig:sync-tasks
 ```
-
-11. Restart apache
-
 ```sh
-# CENTOS/RHEL
-sudo systemctl restart httpd
-```
-
-```sh
-# Ubuntu
-sudo systemctl restart apache2
-```
-
-12. Clear the cache & reset permissions
-
-```sh
-# CENTOS/RHEL
-cd /var/www/html/rconfig
-chown -R apache storage bootstrap/cache
 php artisan rconfig:clear-all
 ```
-
 ```sh
-# Ubuntu
-cd /var/www/html/rconfig
-chown -R www-data storage bootstrap/cache
-php artisan rconfig:clear-all
+chown -R www-data:www-data /var/www/html/rconfig/storage
 ```
-
-13. Open your browser and navigate to your server's domain name. You should see the rConfig login page. The default system credentials are below. Please change or remove these as soon as a new admin user is created.
+```sh
+chmod -R 775 /var/www/html/rconfig/storage
+```
+9. Open your browser and navigate to your server's domain name, the default port for the web app is 8080. You should see the rConfig login page. The default system credentials are below. Please change or remove these as soon as a new admin user is created.
 
 Username: admin@domain.com
 Password: admin
 
-Check out our docs [v6docs.rconfig.com](https://v6docs.rconfig.com) to learn more.
+Check out our docs [v6docs.rconfig.com](https://v6docs.rconfig.com) to learn more
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- Updating -->
-
-<a name="update"></a>
-
-## Updating
-
-> [!IMPORTANT]  
-> Your advised to backup your database, .env file and storage directory at a minimum before proceeding. You should also backup your entire server if possible.
-
-Instruction on how to update your installation of rConfig v6 Core are below. You should run the commands below as root, and you may need to use sudo if installed on Ubuntu.
-
-> [!WARNING]
-> If you edit any of the files in the rConfig directory, you may need to resolve conflicts when you run the `git pull` command. You should be familiar with git and how to resolve conflicts. If you are not, you should not edit any of the files in the rConfig directory. If you get a warning about conflicts, you can try a `git stash` and `git pull` to resolve the conflicts. If you are not familiar with git, you should seek help from a professional.
-
-> [!IMPORTANT]  
-> As of Feb 2024, you will need to update PHP to version 8.3 when updating rConfig Core V6. You will also need to update the composer version to 2.4. You can do this by running the following commands:
-
-```sh
-# Update PHP CentOS/RHEL/ Rocky
-cd /home
-yum -y install wget
-wget https://www.rconfig.com/downloads/php-updates/centos-php8-update.sh -O /home/centos-php8-update.sh
-chmod +x centos-php8-update.sh
-./centos-php8-update.sh
-
-# Update PHP Ubuntu
-cd /home
-sudo apt-get install wget
-wget https://www.rconfig.com/downloads/php-updates/ubuntu-php8-update.sh -O /home/ubuntu-php8-update.sh
-chmod +x ubuntu-php8-update.sh
-./ubuntu-php8-update.sh
-```
-
-rConfig V7 professional subscribers should follow the instructions in the rConfig V7 professional documentation. As the installation and update process is different.
-
-```sh
-# Centos/Rocky/RHEL
-cd /var/www/html/rconfig
-git pull
-php artisan migrate
-php artisan rconfig:sync-tasks
-composer install
-systemctl restart httpd
-php artisan rconfig:clear-all
-```
-
-```sh
-# Ubuntu
-cd /var/www/html/rconfig
-git pull
-php artisan migrate
-php artisan rconfig:sync-tasks
-composer install
-systemctl restart apache2
-php artisan rconfig:clear-all
-```
 
 <!-- CONTRIBUTING -->
 
@@ -381,11 +218,6 @@ Don't forget to give the project a star! Thanks again!
 5. Update the `.env.testing` file with the correct database credentials
 6. Run the tests with `php artisan test`
 
-Front end development requires `npm install --include=dev`, and `npm run dev` to compile the assets with vite.
-
-    If you get a 'connect ENETUNREACH on npm' command, export the following env var
-    export NODE_OPTIONS="--dns-result-order=ipv4first"
-    You can add this to the ~./bashrc file
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
